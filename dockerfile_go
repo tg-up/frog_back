@@ -1,13 +1,9 @@
-FROM golang:1.23.6-alpine3.21
-
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
+FROM golang:1.21-alpine
 
 WORKDIR /app
 
 COPY . .
 
-RUN go mod download
+RUN go build -o main ./cmd
 
-RUN go build -o main cmd
-
+CMD ["./main"]
