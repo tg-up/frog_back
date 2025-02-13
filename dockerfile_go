@@ -9,6 +9,6 @@ COPY . .
 
 RUN go mod download
 
-RUN go build -o cmd/main.go .
+RUN go build -o main ./сmd/main.go
 
 CMD ["./main"]
