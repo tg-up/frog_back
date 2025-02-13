@@ -1,5 +1,14 @@
 
 services:
+  tgup:
+    container_name: tgup
+    build:
+      context: .
+      dockerfile: dockerfile_go
+    ports:
+      - $SERVER_PORT:$SERVER_PORT
+    networks:
+      - tgup
   postgres:
     image: postgres
     container_name: postgres
@@ -12,7 +21,11 @@ services:
       - $DB_PORT:5432
     volumes:
       - postgres:/var/lib/postgresql/data/pgdata
+    networks:
+      - tgup
 
 volumes:
   postgres:
 
+networks:
+  tgup:
