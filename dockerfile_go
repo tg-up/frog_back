@@ -9,6 +9,5 @@ COPY . .
 
 RUN go mod download
 
-RUN go build -o main ./сmd
+CMD ["ls", "-R", "/app"]
 
-CMD ["./main"]
