@@ -16,7 +16,7 @@ type ServiceFieldsResponse struct {
 }
 
 func GetFieldsResponse(values []models.ServiceField) []ServiceFieldsResponse {
-	var fields []ServiceFieldsResponse
+	var fields = make([]ServiceFieldsResponse, 0)
 
 	for _, model := range values {
 		fields = append(fields, ServiceFieldsResponse{
