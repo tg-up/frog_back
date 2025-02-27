@@ -6,15 +6,16 @@ import (
 )
 
 type Config struct {
-	ServerHost    string `mapstructure:"SERVER_HOST"`
-	ServerPort    string `mapstructure:"SERVER_PORT"`
-	DBHost        string `mapstructure:"DB_HOST"`
-	DBPort        string `mapstructure:"DB_PORT"`
-	DBUser        string `mapstructure:"DB_USER"`
-	DBPassword    string `mapstructure:"DB_PASSWORD"`
-	DBName        string `mapstructure:"DB_NAME"`
-	Mode          string `mapstructure:"MODE"`
-	AllowedOrigin string `mapstructure:"ALLOWED_ORIGIN"`
+	ServerHost      string `mapstructure:"SERVER_HOST"`
+	ServerPort      string `mapstructure:"SERVER_PORT"`
+	DBHost          string `mapstructure:"DB_HOST"`
+	DBPort          string `mapstructure:"DB_PORT"`
+	DBUser          string `mapstructure:"DB_USER"`
+	DBPassword      string `mapstructure:"DB_PASSWORD"`
+	DBName          string `mapstructure:"DB_NAME"`
+	Mode            string `mapstructure:"MODE"`
+	AllowedOrigin   string `mapstructure:"ALLOWED_ORIGIN"`
+	JWTPrivateToken string `mapstructure:"JWT_PRIVATE_KEY"`
 }
 
 var GlobalConfig Config

@@ -1,13 +1,18 @@
 package routes
 
 import (
+	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-contrib/requestid"
 	"github.com/gin-gonic/gin"
 	"icecreambash/tgup_backend/internal/middlewares"
 	"net/http"
 )
 
+var JWTAuthMiddleware *jwt.GinJWTMiddleware
+
 func InjectRoutes(r *gin.Engine) {
+
+	JWTAuthMiddleware = middlewares.LoadJWTAuth()
 
 	r.Use(
 		requestid.New(
@@ -28,5 +33,7 @@ func InjectRoutes(r *gin.Engine) {
 	{
 		platforms := api.Group("platforms")
 		InitPlatformRoutes(platforms)
+		users := api.Group("users")
+		InitUsersRoutes(users)
 	}
 }

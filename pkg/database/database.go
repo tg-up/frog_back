@@ -27,5 +27,6 @@ func InitDB() error {
 	DB.AutoMigrate(&models.Platform{})
 	DB.AutoMigrate(&models.PlatformServices{})
 	DB.AutoMigrate(&models.ServiceField{})
+	DB.AutoMigrate(&models.User{})
 	return nil
 }

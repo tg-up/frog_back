@@ -27,4 +27,5 @@ func InitPlatformRoutes(router *gin.RouterGroup) {
 	fields := platformServices.Group("/:service_id/fields")
 
 	fields.GET("/", platformController.GetFieldsByService)
+
 }
