@@ -8,6 +8,14 @@ import (
 	"icecreambash/tgup_backend/internal/services"
 )
 
+// GetMe godoc
+// @Summary      Проверка авторизации
+// @Description  Получения claims и проверка авторизации
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Router       /api_gateway/auth/me [get]
+// @Security ApiKeyAuth
 func InitUsersRoutes(router *gin.RouterGroup) {
 
 	userService := services.NewUserService()

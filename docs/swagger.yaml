@@ -1,0 +1,78 @@
+definitions:
+  user.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  user.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+info:
+  contact: {}
+paths:
+  /api_gateway/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Метод для получения JWT токена и использования его в дальнейшем
+        для подписи действий в API
+      parameters:
+      - description: Параметры для авторизации
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.LoginRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Авторизация в системе
+      tags:
+      - auth
+  /api_gateway/auth/me:
+    get:
+      consumes:
+      - application/json
+      description: Получения claims и проверка авторизации
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Проверка авторизации
+      tags:
+      - auth
+  /api_gateway/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Метод для создания пользователя
+      parameters:
+      - description: Параметры для регистрации
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.RegisterRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Регистрация в системе
+      tags:
+      - auth
+swagger: "2.0"

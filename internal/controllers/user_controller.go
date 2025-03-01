@@ -18,6 +18,14 @@ func NewUserController(userService services.UserService) *UserController {
 	return &UserController{userService: services.UserService{}}
 }
 
+// Login godoc
+// @Summary      Авторизация в системе
+// @Description  Метод для получения JWT токена и использования его в дальнейшем для подписи действий в API
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        request body user.LoginRequest true "Параметры для авторизации"
+// @Router       /api_gateway/auth/login [post]
 func (userController *UserController) Login(c *gin.Context) {
 	request := user.LoginRequest{}
 
@@ -55,6 +63,14 @@ func (userController *UserController) Login(c *gin.Context) {
 	})
 }
 
+// Register godoc
+// @Summary      Регистрация в системе
+// @Description  Метод для создания пользователя
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        request body user.RegisterRequest true "Параметры для регистрации"
+// @Router       /api_gateway/auth/register [post]
 func (userController *UserController) Register(c *gin.Context) {
 	request := user.RegisterRequest{}
 
