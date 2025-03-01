@@ -10,7 +10,7 @@
 ```bash
     go install github.com/swaggo/swag/cmd/swag@latest
 ```
-### Если env_go не установлен в bashrc, до добавьте следующее
+### Если env_go не установлен в bashrc, до добавьте следующее -
 ```bash
     export PATH=$(go env GOPATH)/bin:$PATH
 ```
