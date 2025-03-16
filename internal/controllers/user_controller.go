@@ -57,9 +57,8 @@ func (userController *UserController) Login(c *gin.Context) {
 		})
 	}
 
-	c.JSON(200, gin.H{
-		"password": request.Password,
-		"valid":    utils.GenerateToken(&userFind),
+	c.JSON(201, gin.H{
+		"token": utils.GenerateToken(&userFind),
 	})
 }
 
