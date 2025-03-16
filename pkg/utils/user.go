@@ -3,7 +3,7 @@ package utils
 import (
 	jwtlib "github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
-	"icecreambash/tgup_backend/internal/config"
+	"icecreambash/tgup_backend/internal/configs"
 	"icecreambash/tgup_backend/internal/models"
 	"time"
 )
@@ -33,7 +33,7 @@ func GenerateToken(user *models.User) string {
 		"exp":        time.Now().Add(time.Hour * 1).Unix(),
 	}
 	// Sign and get the complete encoded token as a string
-	tokenString, err := token.SignedString([]byte(config.GlobalConfig.JWTPrivateToken))
+	tokenString, err := token.SignedString([]byte(configs.GlobalConfig.JWTPrivateToken))
 
 	if err != nil {
 		panic(err)

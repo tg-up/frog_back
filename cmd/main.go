@@ -6,19 +6,31 @@ import (
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "icecreambash/tgup_backend/docs"
-	"icecreambash/tgup_backend/internal/config"
+	"icecreambash/tgup_backend/internal/configs"
 	"icecreambash/tgup_backend/internal/routes"
 	"icecreambash/tgup_backend/pkg/database"
 	"icecreambash/tgup_backend/seeds/platform"
 	"log"
 )
 
+func failOnError(err error, msg string) {
+	if err != nil {
+		log.Panicf("%s: %s", msg, err)
+	}
+}
+
 func init() {
-	config.LoadConfig()
+	configs.LoadConfig()
 	err := database.InitDB()
 	if err != nil {
 		log.Fatalf("init db err: %v", err)
 	}
+	_, ch, err := database.LoadRabbitMQ()
+
+	if err != nil {
+		log.Fatalf("load rabbitmq err: %v", err)
+	}
+	database.RabbitMQ = ch
 }
 
 // @title           Swagger TG-UP API DOCS
@@ -44,7 +56,7 @@ func main() {
 		return
 	}
 
-	if config.GlobalConfig.Mode == "prod" {
+	if configs.GlobalConfig.Mode == "prod" {
 		gin.SetMode(gin.ReleaseMode)
 	} else {
 		gin.SetMode(gin.DebugMode)
@@ -56,7 +68,7 @@ func main() {
 
 	ginDemon.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	if err := ginDemon.Run(config.GlobalConfig.ServerHost + ":" + config.GlobalConfig.ServerPort); err != nil {
+	if err := ginDemon.Run(configs.GlobalConfig.ServerHost + ":" + configs.GlobalConfig.ServerPort); err != nil {
 		log.Fatalf("Down on startup ginDemon: %v", err)
 	}
 }

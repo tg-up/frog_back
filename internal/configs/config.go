@@ -1,4 +1,4 @@
-package config
+package configs
 
 import (
 	"github.com/spf13/viper"
@@ -25,7 +25,7 @@ func LoadConfig() {
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("Error reading config file, %s", err)
+		log.Fatalf("Error reading configs file, %s", err)
 	}
 	if err := viper.Unmarshal(&GlobalConfig); err != nil {
 		log.Fatalf("Unable to decode into struct: %v", err)

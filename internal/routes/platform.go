@@ -12,9 +12,8 @@ func InitPlatformRoutes(router *gin.RouterGroup) {
 	//Load Repositories
 	platformRepository := repositories.NewPlatformRepository(database.DB)
 	platformServiceRepository := repositories.NewPlatformServiceRepository(database.DB)
-	serviceFieldsRepository := repositories.NewServiceFieldsRepository(database.DB)
 	//Load Services
-	platformService := services.NewPlatformService(platformRepository, platformServiceRepository, serviceFieldsRepository)
+	platformService := services.NewPlatformService(platformRepository, platformServiceRepository)
 	//LoadPlatforms
 	platformController := controllers.NewPlatformController(*platformService)
 
@@ -23,9 +22,5 @@ func InitPlatformRoutes(router *gin.RouterGroup) {
 	platformServices := router.Group(":id/services")
 
 	platformServices.GET("/", platformController.GetPlatformServices)
-
-	fields := platformServices.Group("/:service_id/fields")
-
-	fields.GET("/", platformController.GetFieldsByService)
 
 }

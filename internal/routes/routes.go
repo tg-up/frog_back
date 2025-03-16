@@ -33,7 +33,12 @@ func InjectRoutes(r *gin.Engine) {
 	{
 		platforms := api.Group("platforms")
 		InitPlatformRoutes(platforms)
+
 		users := api.Group("users")
 		InitUsersRoutes(users)
+
+		orders := api.Group("orders")
+		orders.Use(JWTAuthMiddleware.MiddlewareFunc())
+		InitOrdersRoutes(orders)
 	}
 }
