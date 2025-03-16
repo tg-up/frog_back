@@ -51,26 +51,3 @@ func (platform *PlatformController) GetPlatformServices(ctx *gin.Context) {
 		"data": values,
 	})
 }
-
-func (platform *PlatformController) GetFieldsByService(ctx *gin.Context) {
-	id, err := strconv.Atoi(ctx.Param("service_id"))
-
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": "service_id not valid format",
-		})
-	}
-
-	values, err := platform.platformService.GetFieldsByServiceID(id)
-
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Server Error",
-		})
-		return
-	}
-
-	ctx.JSON(200, gin.H{
-		"data": values,
-	})
-}

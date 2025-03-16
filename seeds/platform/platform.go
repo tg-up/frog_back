@@ -1,73 +1,54 @@
 package platform
 
 import (
-	"encoding/json"
 	"icecreambash/tgup_backend/internal/models"
 	"icecreambash/tgup_backend/pkg/database"
 	"log"
 )
 
 var servicesPlatform = map[string][]models.PlatformServices{
-	"vk": []models.PlatformServices{
+	"tg": []models.PlatformServices{
 		models.PlatformServices{
-			Name: "Подписчики в группу",
-			Slug: "subscribers_in_groups",
+			Name:          "Подписчики в группу(3Days+ drop)",
+			Slug:          "subscribers_in_groups_3d_drop",
+			MinCount:      10,
+			MaxCount:      10000,
+			Drip:          false,
+			Amount:        0.5,
+			AmountAbility: 1000,
 		},
 		models.PlatformServices{
-			Name: "Друзья",
-			Slug: "subscribers_in_friends",
+			Name:          "Подписчики в группу(7Days+ drop)",
+			Slug:          "subscribers_in_groups_7d_drop",
+			MinCount:      10,
+			MaxCount:      10000,
+			Drip:          false,
+			Amount:        0.75,
+			AmountAbility: 1000,
 		},
-	},
-}
-
-var calls = map[string][]models.ServiceField{
-	"vk_subscribers_in_groups": []models.ServiceField{
-		models.ServiceField{
-			FieldName:    "Тип накрутки",
-			FieldSlug:    "type_worker",
-			FieldType:    "radio",
-			DefaultValue: "5",
-			TempOptions: []models.Option{
-				models.Option{
-					Key:   "Боты",
-					Value: 5,
-				},
-				models.Option{
-					Key:   "Живые",
-					Value: 4,
-				},
-			},
-			CostType: "coeff",
-			Size:     "grow",
+		models.PlatformServices{
+			Name:          "Подписчики в группу(30 Days drop)",
+			Slug:          "subscribers_in_groups_30d_drop",
+			MinCount:      10,
+			MaxCount:      10000,
+			Drip:          false,
+			Amount:        1,
+			AmountAbility: 1000,
 		},
-		models.ServiceField{
-			FieldName:    "Качество",
-			FieldSlug:    "quality",
-			FieldType:    "radio",
-			DefaultValue: "5",
-			TempOptions: []models.Option{
-				models.Option{
-					Key:   "Низкое - 3",
-					Value: 5,
-				},
-				models.Option{
-					Key:   "Среднее - 5",
-					Value: 4,
-				},
-				models.Option{
-					Key:   "Высокое - 10",
-					Value: 10,
-				},
-			},
-			CostType: "base",
-			Size:     "grow",
+		models.PlatformServices{
+			Name:          "Подписчики в группу(No drop)",
+			Slug:          "subscribers_in_groups_no_drop",
+			MinCount:      10,
+			MaxCount:      10000,
+			Drip:          false,
+			Amount:        1.4,
+			AmountAbility: 1000,
 		},
 	},
 }
 
 func PlatformSeeds() {
 	platforms := []models.Platform{
-		{Name: "VK", Slug: "vk"},
 		{Name: "Telegram", Slug: "tg"},
 	}
 
@@ -98,28 +79,6 @@ func PlatformSeeds() {
 				if err != nil {
 					log.Fatal(err)
 				}
-			}
-
-			fields := calls[platform.Slug+"_"+service.Slug]
-
-			if fields == nil {
-				continue
-			}
-
-			for _, field := range fields {
-				var tempField models.ServiceField
-				database.DB.Model(&tempField).Where("field_slug = ?", field.FieldSlug).Where("service_id = ?", service.ID).Find(&tempField)
-
-				if tempField.ID == 0 {
-					data, err := json.Marshal(field.TempOptions)
-					if err != nil {
-						log.Fatal(err)
-					}
-					field.Options.Scan(data)
-					field.ServiceID = service.ID
-					database.DB.Save(&field)
-				}
-
 			}
 		}
 	}

@@ -3,7 +3,7 @@ package middlewares
 import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
-	"icecreambash/tgup_backend/internal/config"
+	"icecreambash/tgup_backend/internal/configs"
 	"icecreambash/tgup_backend/internal/models"
 	"icecreambash/tgup_backend/pkg/database"
 	"net/http"
@@ -13,7 +13,7 @@ import (
 func LoadJWTAuth() *jwt.GinJWTMiddleware {
 	authMiddleware, _ := jwt.New(&jwt.GinJWTMiddleware{
 		Realm:        "Lead",
-		Key:          []byte(config.GlobalConfig.JWTPrivateToken),
+		Key:          []byte(configs.GlobalConfig.JWTPrivateToken),
 		Timeout:      time.Hour,
 		MaxRefresh:   time.Hour,
 		IdentityKey:  "id",
@@ -38,6 +38,8 @@ func authorizator(data interface{}, c *gin.Context) bool {
 	if claims["signature"] != user.Password {
 		return false
 	}
+
+	c.Set("user", user)
 
 	return true
 }

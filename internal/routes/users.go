@@ -8,7 +8,7 @@ import (
 	"icecreambash/tgup_backend/internal/services"
 )
 
-// GetMe godoc
+// InitUsersRoutes GetMe godoc
 // @Summary      Проверка авторизации
 // @Description  Получения claims и проверка авторизации
 // @Tags         auth
