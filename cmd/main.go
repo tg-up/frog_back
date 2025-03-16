@@ -13,12 +13,24 @@ import (
 	"log"
 )
 
+func failOnError(err error, msg string) {
+	if err != nil {
+		log.Panicf("%s: %s", msg, err)
+	}
+}
+
 func init() {
 	configs.LoadConfig()
 	err := database.InitDB()
 	if err != nil {
 		log.Fatalf("init db err: %v", err)
 	}
+	_, ch, err := database.LoadRabbitMQ()
+
+	if err != nil {
+		log.Fatalf("load rabbitmq err: %v", err)
+	}
+	database.RabbitMQ = ch
 }
 
 // @title           Swagger TG-UP API DOCS

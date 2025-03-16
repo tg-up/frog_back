@@ -1,7 +1,10 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"icecreambash/tgup_backend/internal/models"
 	orderRequest "icecreambash/tgup_backend/internal/requests/order"
 	"icecreambash/tgup_backend/internal/responses"
@@ -111,6 +114,24 @@ func (order *OrderController) Create(c *gin.Context) {
 	err = database.DB.Create(&newOrder).Error
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to create order"})
+		return
+	}
+
+	body, _ := json.Marshal(&newOrder)
+
+	err = database.RabbitMQ.Publish(
+		"",
+		"order_queue",
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "application/json",
+			Body:        body,
+		},
+	)
+
+	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
