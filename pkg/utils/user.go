@@ -21,6 +21,7 @@ func CheckPasswordHash(password, hash string) bool {
 func GenerateToken(user *models.User) string {
 
 	token := jwtlib.New(jwtlib.GetSigningMethod("HS256"))
+
 	// Set some claims
 	token.Claims = jwtlib.MapClaims{
 		"id":         user.ID,
@@ -28,6 +29,7 @@ func GenerateToken(user *models.User) string {
 		"email":      user.Email,
 		"role":       user.Role,
 		"created_at": user.CreatedAt.Unix(),
+		"signature":  user.Password,
 		"exp":        time.Now().Add(time.Hour * 1).Unix(),
 	}
 	// Sign and get the complete encoded token as a string
